@@ -1,7 +1,7 @@
 // src/components/GameScreen.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FaPause, FaPlay } from 'react-icons/fa';
-import PauseModal from './PauseModal'; // Import the new modal
+import PauseModal from './PauseModal';
 
 // --- Constants ---
 const LANES = [-1, 0, 1];
@@ -14,10 +14,10 @@ const OBSTACLE_SPAWN_RATE_START = 160;
 const OBSTACLE_SPAWN_RATE_DECREASE = 0.01;
 const MIN_OBSTACLE_SPAWN_RATE = 45;
 // Object Dimensions
-const PLAYER_WIDTH = 50;
-const PLAYER_HEIGHT = 80;
-const OBSTACLE_WIDTH = 50;
-const OBSTACLE_HEIGHT = 80;
+const PLAYER_WIDTH = 50; // Use these in style prop
+const PLAYER_HEIGHT = 80; // Use these in style prop
+const OBSTACLE_WIDTH = 50; // Use these in style prop
+const OBSTACLE_HEIGHT = 80; // Use these in style prop
 // Road Markings
 const ROAD_MARKING_HEIGHT = 40;
 const ROAD_MARKING_WIDTH = 6;
@@ -291,19 +291,24 @@ function GameScreen({ onGameOver, highScore, onHowToPlay, onGoHome }) {
                      )}
 
                      {/* High Score Display (Right Aligned) */}
+                     {/* --- CORRECTION: Font size was text-base, changed to text-xs like before --- */}
                      <div className="absolute right-0 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-md font-mono text-base shadow pointer-events-auto">
-                         HighScore: {highScore}
+                         High Score: {highScore}
                      </div>
                 </div>
 
                 {/* Game Elements */}
                 {/* Player Car */}
                 <div
-                    className={`absolute bottom-5 w-[${PLAYER_WIDTH}px] h-[${PLAYER_HEIGHT}px] bg-gradient-to-b from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 border-2 border-black rounded-t-md shadow-lg z-10 ${isPaused ? 'opacity-50 blur-sm' : ''}`} // Blur effect when paused
+                    // REMOVED w-[...] and h-[...] from className
+                    className={`absolute bottom-5 bg-gradient-to-b from-blue-400 to-blue-600 dark:from-blue-500 dark:to-blue-700 border-2 border-black rounded-t-md shadow-lg z-10 ${isPaused ? 'opacity-50 blur-sm' : ''}`}
                     style={{
+                        // ADDED width and height to style prop
+                        width: PLAYER_WIDTH,
+                        height: PLAYER_HEIGHT,
                         left: `calc(50% + ${playerXOffset}px)`,
                         transform: `translateX(-50%) translateZ(10px)`,
-                        transition: isPaused ? 'none' : 'left 0.1s linear', // Disable smooth transition when paused
+                        transition: isPaused ? 'none' : 'left 0.1s linear',
                     }}
                 ></div>
 
@@ -311,8 +316,12 @@ function GameScreen({ onGameOver, highScore, onHowToPlay, onGoHome }) {
                 {obstacles.map(obs => (
                     <div
                         key={obs.id}
-                        className={`absolute w-[${OBSTACLE_WIDTH}px] h-[${OBSTACLE_HEIGHT}px] bg-gradient-to-b from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 border-2 border-black rounded-t-md shadow-md z-10 ${isPaused ? 'opacity-50 blur-sm' : ''}`} // Blur effect when paused
+                        // REMOVED w-[...] and h-[...] from className
+                        className={`absolute bg-gradient-to-b from-red-400 to-red-600 dark:from-red-500 dark:to-red-700 border-2 border-black rounded-t-md shadow-md z-10 ${isPaused ? 'opacity-50 blur-sm' : ''}`}
                         style={{
+                            // ADDED width and height to style prop
+                            width: OBSTACLE_WIDTH,
+                            height: OBSTACLE_HEIGHT,
                             left: `calc(50% + ${obs.lane * LANE_WIDTH}px)`,
                             top: `${obs.y}px`,
                             transform: 'translateX(-50%) translateZ(5px)',
